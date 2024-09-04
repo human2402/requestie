@@ -18,23 +18,27 @@ app.get('/requests', async (req, res) => {
   try {
     const limit = parseInt(req.query._limit) || null;
     const requests = await requestRepository.getAllRequests(limit);
-
-//    const structuredResponse = jobs.map(job => ({
-//      id: job.id,
-//      title: job.title,
-//      type: job.type,
-//      location: job.location,
-//      description: job.description,
-//      salary: job.salary,
-//      company: {
-//        name: job.company_name,
-//        description: job.company_description,
-//        contactEmail: job.contact_email,
-//        contactPhone: job.contact_phone
-//      }
-//    }));
-
-    res.json(requests);
+    const structuredResponse = {
+      pending:[],
+      inprogress:[],
+      completed:[]
+    }
+    requests.forEach(element => {
+      console.log (element.id)
+      switch(element.status) {
+        case "Pending":
+          structuredResponse.pending.push(element)
+          break;
+        case "In Progress":
+          structuredResponse.inprogress.push(element)
+          break;
+        case 'Completed':
+          structuredResponse.completed.push(element)
+          break;
+      }
+    });
+  // console.log (structuredResponse)
+    res.json(structuredResponse);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

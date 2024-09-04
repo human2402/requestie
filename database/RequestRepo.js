@@ -9,6 +9,8 @@ class RequestRepository {
     async getAllRequests(limit) {
         let query = 'SELECT * FROM requests';
         const params = [];
+
+        
     
         if (limit) {
           query += ' LIMIT ?';

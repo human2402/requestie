@@ -25,10 +25,11 @@ class Database {
     
     await this.run(`
     INSERT INTO requests (status, time, title, type, description, location, contact) VALUES
-    ('Pending', '2023-09-01 12:00', 'Issue with lights', 'Maintenance', 'The lights in the hallway are flickering.', 'Building A, 2nd Floor', 'John Doe, 555-1234'),
-    ('Completed', '2023-09-02 15:00', 'Broken window', 'Repair', 'The window in room 204 is broken.', 'Building B, Room 204', 'Jane Smith, 555-5678'),
-    ('In Progress', '2023-09-03 09:30', 'Leaky faucet', 'Maintenance', 'The faucet in the kitchen is leaking.', 'Building C, Kitchen', 'Alice Johnson, 555-8765')
+    ('Pending', '2023-09-01 12:00', 'Issue with lights1111', 'Maintenance', 'The lights in the hallway are flickering.', 'Building A, 2nd Floor', 'John Doe, 555-1234'),
+    ('Completed', '2023-09-02 15:00', 'Broken window', 'Repair', 'The window in room 204 is broken.', 'Building B, Room 204', 'Jane Smith, 555-5678')
+    
   `);
+  // ('In Progress', '2023-09-03 09:30', 'Leaky faucet', 'Maintenance', 'The faucet in the kitchen is leaking.', 'Building C, Kitchen', 'Alice Johnson, 555-8765')
   }
 
   async close() {
