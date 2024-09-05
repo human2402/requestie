@@ -3,16 +3,36 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 
 
-import AllRequests from "/src/pages/AllRequests.jsx"
+import Kanban from "/src/pages/Kanban.jsx"
+import NotFoundPage from './pages/NotFoundPage'
 import './App.css'
+import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
+import MainLayout from './layouts/MainLayout'
+import MakeRequest from './pages/MakeRequest'
 
 function App() {
 //  const [count, setCount] = useState(0)
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path = '/' element = {<MainLayout />} >
+
+
+        <Route index element = {<Kanban />} />
+        <Route path = '/make-request' element = {<MakeRequest />} />
+
+        <Route 
+        path='*' 
+        element = {<NotFoundPage />}
+       />
+      </Route>
+    )
+  )
+
 
   return (
     <>
-
-      <AllRequests />
+      
+      <RouterProvider router={router} />
       {/*<div>*/}
       {/*  <a href="https://vitejs.dev" target="_blank">*/}
       {/*    <img src={viteLogo} className="logo" alt="Vite logo" />*/}

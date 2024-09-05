@@ -3,7 +3,7 @@ import Database from './Database.js'
 import RequestRepository from './RequestRepo.js'
 
 const app = express();
-const port = process.env.PORT || 3030;
+const port = process.env.PORT || 3031;
 
 const db = new Database('./super.db');
 const requestRepository = new RequestRepository(db);
@@ -24,7 +24,7 @@ app.get('/requests', async (req, res) => {
       completed:[]
     }
     requests.forEach(element => {
-      console.log (element.id)
+      // console.log (element.id)
       switch(element.status) {
         case "Pending":
           structuredResponse.pending.push(element)
