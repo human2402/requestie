@@ -45,6 +45,27 @@ app.get('/requests', async (req, res) => {
 });
 
 
+app.post ('/sign-in', async (req, res) => {
+  const username = req.body.username
+  const password = req.body.password
+  const resSignIn = await requestRepository.getUserByUsernameWithPass(username, password)
+  if (resSignIn.length == 1) {
+    if (password==resSignIn[0].password) {
+      let newSessionID = await requestRepository.createSession(resSignIn[0].username, resSignIn[0].role)
+      console.log ('created new session id:', newSessionID) 
+      res.json({
+        name: resSignIn[0].name,
+        role: resSignIn[0].role,
+        sessionID: newSessionID
+      });
+    }
+  }
+  // res.json({resSignIn: resSignIn});
+  res.status(500)
+  console.log (resSignIn)
+})
+
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);

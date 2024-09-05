@@ -9,17 +9,27 @@ import './App.css'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout'
 import MakeRequest from './pages/MakeRequest'
+import SigninPage from './pages/SigninPage'
 
 function App() {
+  const [user, setUser] = useState ({
+    firstName: '',
+    sessionID: '',
+    role: ''
+  })
+  const [sessionID, setSessionID] = useState ('') 
+  const [userFirstName, setUserFirstName] = useState('')
 //  const [count, setCount] = useState(0)
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path = '/' element = {<MainLayout />} >
+      <Route path = '/' element = {<MainLayout userFirstName  = {userFirstName}/>} >
 
 
         <Route index element = {<Kanban />} />
         <Route path = '/make-request' element = {<MakeRequest />} />
-
+        <Route path = '/sign-in' element = {
+          <SigninPage setUser={ setUser } />
+        } />
         <Route 
         path='*' 
         element = {<NotFoundPage />}

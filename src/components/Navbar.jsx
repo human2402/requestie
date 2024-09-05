@@ -49,16 +49,10 @@ const Navbar = ({userFirstName}) => {
                 : (
                   <>
                   <NavLink
-                  to="/job-add"
-                  className={LinkclassName}
-                >
-                  Разместить вакансию
-                </NavLink>
-                  <NavLink
                   to="/profile"
                   className={LinkclassName}
                 >
-                  Профиль
+                  { userFirstName  }
                 </NavLink>
                 </>
                 )
