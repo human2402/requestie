@@ -22,13 +22,30 @@ class Database {
         contact TEXT
       )
     `);
-    
+
+    // Create the users table
     await this.run(`
-    INSERT INTO requests (status, time, title, type, description, location, contact) VALUES
-    ('Pending', '2023-09-01 12:00', 'Issue with lights1111', 'Maintenance', 'The lights in the hallway are flickering.', 'Building A, 2nd Floor', 'John Doe, 555-1234'),
-    ('Completed', '2023-09-02 15:00', 'Broken window', 'Repair', 'The window in room 204 is broken.', 'Building B, Room 204', 'Jane Smith, 555-5678')
+      CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        username TEXT UNIQUE,
+        password TEXT,
+        name TEXT,
+        role TEXT
+      )
+    `);
+
+    // Insert one user into the users table
+    // await this.run(`
+    //   INSERT OR IGNORE INTO users (username, password, name, role) 
+    //   VALUES ('admin', 'admin123', 'Admin User', 'admin')
+    // `);
     
-  `);
+  //   await this.run(`
+  //   INSERT INTO requests (status, time, title, type, description, location, contact) VALUES
+  //   ('Pending', '2023-09-01 12:00', 'Issue with lights1111', 'Maintenance', 'The lights in the hallway are flickering.', 'Building A, 2nd Floor', 'John Doe, 555-1234'),
+  //   ('Completed', '2023-09-02 15:00', 'Broken window', 'Repair', 'The window in room 204 is broken.', 'Building B, Room 204', 'Jane Smith, 555-5678')
+    
+  // `);
   // ('In Progress', '2023-09-03 09:30', 'Leaky faucet', 'Maintenance', 'The faucet in the kitchen is leaking.', 'Building C, Kitchen', 'Alice Johnson, 555-8765')
   }
 
