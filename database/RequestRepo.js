@@ -1,4 +1,4 @@
-import { FaTheRedYeti } from 'react-icons/fa';
+import { request } from 'express';
 import Database from './Database.js';
 
 
@@ -11,13 +11,11 @@ function addMonths(date, months) {
 }
 
 class RequestRepository {
-  constructor(database) {
-      this.db = database;
-  }
-  
-
-
-  async getAllRequests(limit) {
+    constructor(database) {
+        this.db = database;
+    }
+    
+    async getAllRequests(limit) {
       let query = 'SELECT * FROM requests';
       const params = [];
 
@@ -55,6 +53,14 @@ class RequestRepository {
 
   
     
+    async addRequest (reqArray) {
+      const res = await this.db.run (`
+        INSERT INTO requests (status, time, title, type, description, location, contact) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `, reqArray);
+
+      return result.lastID;
+    }
     
 }
 

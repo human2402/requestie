@@ -1,9 +1,10 @@
 import express from 'express';
 import Database from './Database.js'
 import RequestRepository from './RequestRepo.js'
+import { AiOutlineOneToOne } from 'react-icons/ai';
 
 const app = express();
-const port = process.env.PORT || 3031;
+const port = process.env.PORT || 3033;
 
 const db = new Database('./super.db');
 const requestRepository = new RequestRepository(db);
@@ -45,6 +46,8 @@ app.get('/requests', async (req, res) => {
 });
 
 
+
+
 app.post ('/sign-in', async (req, res) => {
   const username = req.body.username
   const password = req.body.password
@@ -65,6 +68,17 @@ app.post ('/sign-in', async (req, res) => {
   console.log (resSignIn)
 })
 
+
+app.post('/add-request', async (req, res) => {
+  try {
+    const newReq = req.body;
+    const reqId = await requestRepository.createRequest(newJob);
+
+    res.json({ message: 'Request created successfully', id: requestID });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 // Start the server
 app.listen(port, () => {
