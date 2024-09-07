@@ -1,10 +1,9 @@
 import express from 'express';
 import Database from './Database.js'
 import RequestRepository from './RequestRepo.js'
-import { AiOutlineOneToOne } from 'react-icons/ai';
 
 const app = express();
-const port = process.env.PORT || 3033;
+const port = process.env.PORT || 3034;
 
 const db = new Database('./super.db');
 const requestRepository = new RequestRepository(db);
@@ -52,19 +51,27 @@ app.post ('/sign-in', async (req, res) => {
   const username = req.body.username
   const password = req.body.password
   const resSignIn = await requestRepository.getUserByUsernameWithPass(username, password)
+  
+  let isSuc = false
   if (resSignIn.length == 1) {
     if (password==resSignIn[0].password) {
-      let newSessionID = await requestRepository.createSession(resSignIn[0].username, resSignIn[0].role)
+      isSuc = true   
+    }
+  }
+  if (isSuc) {
+    let newSessionID = await requestRepository.createSession(resSignIn[0].username, resSignIn[0].role)
       console.log ('created new session id:', newSessionID) 
       res.json({
         name: resSignIn[0].name,
+        secondName: resSignIn[0].secondname,
         role: resSignIn[0].role,
         sessionID: newSessionID
       });
-    }
+  } else {
+    res.status(401).json({fail: "что-то не то как-то"})
   }
   // res.json({resSignIn: resSignIn});
-  res.status(500)
+ 
   console.log (resSignIn)
 })
 
@@ -72,9 +79,9 @@ app.post ('/sign-in', async (req, res) => {
 app.post('/add-request', async (req, res) => {
   try {
     const newReq = req.body;
-    const reqId = await requestRepository.createRequest(newJob);
+    const reqId = await requestRepository.createRequest(newReq);
 
-    res.json({ message: 'Request created successfully', id: requestID });
+    res.json({ message: reqId });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

@@ -14,15 +14,15 @@ import SigninPage from './pages/SigninPage'
 function App() {
   const [user, setUser] = useState ({
     firstName: '',
+    secondName: '',
     sessionID: '',
     role: ''
   })
-  const [sessionID, setSessionID] = useState ('') 
-  const [userFirstName, setUserFirstName] = useState('')
+
 //  const [count, setCount] = useState(0)
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path = '/' element = {<MainLayout userFirstName  = {userFirstName}/>} >
+      <Route path = '/' element = {<MainLayout user  = {user}/>} >
 
 
         <Route index element = {<Kanban />} />

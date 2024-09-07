@@ -13,7 +13,7 @@ function SigninPage({ setUser }) {
     const loginClickHandle = (e) => {
         
         e.preventDefault();
-        const fetchJobs = async () => {
+        const signInAttempt = async () => {
             try {
             const res = await fetch(`/api/sign-in/`, {
                 method: 'POST',
@@ -27,33 +27,33 @@ function SigninPage({ setUser }) {
                 });
             const data = await res.json();
             const stat = (res.status)
-            console.log (data)
-            
-            // setLoginStat ( stat )
-            // setUserID(data.setUserID)
-            // setSessionID(data.sessionID);
-            // setUserFirstName(data.userName)
-            // if (stat == 200) {
-            // toast.success("Успешно!")
-            //  navigate('/');
-                
-            // }
+            console.log (stat,data)
+            setLoginStat(stat)
+            if (stat == 200) {
+              setUser({
+                firstName: data.name,
+                secondName: data.secondName,
+                sessionID: data.sessionID,
+                role: data.role
+              })
+              
+              // toast.success("Успешно!")
+              return navigate('/');
+            }
             } catch (error) {
-                setLoginStat (401)
                 console.log ('Error fetching data', error)
-                
+                setLoginStat(stat)
             }
         }
         
-        fetchJobs();
+        signInAttempt();
         console.log (loginStat)
         // if (loginStat == 200) {
-        //     toast.success("Успешно!")
-        //     return navigate('/');
+            
         // } else 
-        if ( loginStat = 401 ) {
-            toast.error("Неверная почта или пароль")
-        }
+        // if ( loginStat == 401 ) {
+        //     // toast.error("Неверная почта или пароль")
+        // }
 
         return 
         
@@ -90,14 +90,14 @@ function SigninPage({ setUser }) {
                   <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
                     Имя пользователя
                   </label>
-                  <div className="mt-2">
+                  <div className="mt-2 ">
                     <input
 
                       id="username"
                       name="username"
                       type="text"
                       required
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block py-2 px-3 mb-2 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       value={ inputUserName }
                       onChange={ ( e ) => setinputUserName ( e.target.value ) }
                     />
@@ -122,7 +122,7 @@ function SigninPage({ setUser }) {
                       type="password"
                       autoComplete="current-password"
                       required
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                      className="block w-full py-2 px-3 mb-2 rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                       value={ inputPassword }
                       onChange={ ( e ) => setInputPassword ( e.target.value ) }
                     />

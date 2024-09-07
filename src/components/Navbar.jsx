@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import logo from '../assets/chibgu.png';
 
-const Navbar = ({userFirstName}) => {
+const Navbar = ({user}) => {
   const LinkclassName = ({ isActive }) =>
     isActive
       ? 'bg-black text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'
@@ -27,19 +27,13 @@ const Navbar = ({userFirstName}) => {
             <div className="md:ml-auto">
               <div className="flex space-x-2">
                 <NavLink
-                  to="/"
-                  className={LinkclassName }
-                >
-                  Дела
-                </NavLink>
-                <NavLink
                   to="/make-request"
                   className={LinkclassName}
                 >
                   Запрос
                 </NavLink>
                 
-                { (userFirstName == '')?
+                { (user.sessionID == '')?
                 (<NavLink
                   to="/sign-in"
                   className={LinkclassName}
@@ -49,10 +43,16 @@ const Navbar = ({userFirstName}) => {
                 : (
                   <>
                   <NavLink
+                    to="/"
+                    className={LinkclassName }
+                  >
+                    Дела
+                  </NavLink>
+                  <NavLink
                   to="/profile"
                   className={LinkclassName}
                 >
-                  { userFirstName  }
+                  { user.firstName  }
                 </NavLink>
                 </>
                 )
