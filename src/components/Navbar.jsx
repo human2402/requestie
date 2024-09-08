@@ -8,7 +8,7 @@ const Navbar = ({user}) => {
       : 'text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2';
 
   return (
-    <nav className="bg-indigo-700 border-b border-indigo-500">
+    <nav className="border-b border-indigo-500" style = {{backgroundColor: '#164676'}}>
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           <div
@@ -27,7 +27,7 @@ const Navbar = ({user}) => {
             <div className="md:ml-auto">
               <div className="flex space-x-2">
                 <NavLink
-                  to="/make-request"
+                  to="/"
                   className={LinkclassName}
                 >
                   Запрос
@@ -43,7 +43,7 @@ const Navbar = ({user}) => {
                 : (
                   <>
                   <NavLink
-                    to="/"
+                    to="/kanban"
                     className={LinkclassName }
                   >
                     Дела
@@ -52,7 +52,7 @@ const Navbar = ({user}) => {
                   to="/profile"
                   className={LinkclassName}
                 >
-                  { user.firstName  }
+                  Выйти: { user.firstName  }
                 </NavLink>
                 </>
                 )

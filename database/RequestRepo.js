@@ -1,5 +1,6 @@
 import { request } from 'express';
 import Database from './Database.js';
+import { TfiJsfiddle } from 'react-icons/tfi';
 
 
 let sessionExpiration = 5; 
@@ -89,6 +90,54 @@ class RequestRepository {
     `, fullAr);
 
     return res.lastID;
+  }
+
+  async deleteRequest (delID) {
+    await this.db.run(`
+      DELETE FROM requests WHERE id = ?  
+    `, [delID],
+    (err) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ message: 'Job deleted successfully' });
+    })
+  }
+
+  async findSessionByID (sessionID) {
+    let res = await this.db.get (`
+      SELECT * FROM sessions WHERE id = ?  
+    `, [sessionID])
+    return res
+  }
+
+  async findRequestByID (reqID) {
+    let res = await this.db.get(`
+      SELECT * FROM requests WHERE id = ?
+    `, [reqID])
+    // console.log(res)
+    return res
+  }
+
+  async updateRequest(id, reqUpdated) {
+    await this.db.run(
+      `
+      UPDATE requests
+      SET
+        status = ?,
+        title = ?,
+        type = ?,
+        description = ?,
+        location = ?,
+        contact = ?
+      WHERE id = ?
+      `,
+      [
+        ...Object.values(reqUpdated),
+        id
+      ]
+    );
   }
     
 }

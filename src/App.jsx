@@ -10,6 +10,8 @@ import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } 
 import MainLayout from './layouts/MainLayout'
 import MakeRequest from './pages/MakeRequest'
 import SigninPage from './pages/SigninPage'
+import EditRequest from './pages/EditRequest'
+import Profile from './pages/Profile'
 
 function App() {
   const [user, setUser] = useState ({
@@ -19,17 +21,33 @@ function App() {
     role: ''
   })
 
+  const signOut = () => {
+    setUser(
+      {
+        firstName: '',
+        secondName: '',
+        sessionID: '',
+        role: ''
+      }
+    )
+  }
+
 //  const [count, setCount] = useState(0)
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path = '/' element = {<MainLayout user  = {user}/>} >
+      <Route path = '/' element = {<MainLayout user  = {user} />} >
 
 
-        <Route index element = {<Kanban />} />
-        <Route path = '/make-request' element = {<MakeRequest />} />
+        {/* <Route index element = {<Kanban />} /> */}
+        <Route path = '/kanban' element = {<Kanban user = {user} />} />
+        <Route  index element = {<MakeRequest />} />
         <Route path = '/sign-in' element = {
           <SigninPage setUser={ setUser } />
         } />
+
+        <Route path = '/profile' element = {<Profile signOut = {signOut}/>} />
+
+        <Route path = '/request-edit/:id' element  = {<EditRequest user = {user}/>} />
         <Route 
         path='*' 
         element = {<NotFoundPage />}

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import TaskSingle from '../components/TaskSingle';
 
-const Kanban = () => {
+const Kanban = ({user}) => {
   const [tasks, setTasks] = useState({ pending: [], inprogress: [], completed: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -38,7 +38,7 @@ const Kanban = () => {
           <h2 className="text-3xl font-semibold mb-2">Ожидается</h2>
           {tasks.pending.map((task) => (
             <div key={task.id} className="bg-white shadow-md rounded-lg p-4 mb-4">
-              <TaskSingle task={task} />
+              <TaskSingle user={user} task={task} />
             </div>
           ))}
         </div>
@@ -48,7 +48,7 @@ const Kanban = () => {
           <h2 className="text-3xl font-semibold mb-2">В процессе</h2>
           {tasks.inprogress.map((task) => (
             <div key={task.id} className="bg-white shadow-md rounded-lg p-4 mb-4">
-              <TaskSingle task={task} />
+              <TaskSingle user={user} task={task} />
             </div>
           ))}
         </div>
@@ -58,7 +58,7 @@ const Kanban = () => {
           <h2 className="text-3xl font-semibold mb-2">Завершено</h2>
           {tasks.completed.map((task) => (
             <div key={task.id} className="bg-white shadow-md rounded-lg p-4 mb-4">
-              <TaskSingle task={task} />
+              <TaskSingle user={user} task={task} />
             </div>
           ))}
         </div>
