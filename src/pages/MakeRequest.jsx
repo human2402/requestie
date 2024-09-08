@@ -11,7 +11,7 @@ function MakeRequest( {addRuquestSubmit} ) {
     const [autorName, setAutorName] = useState('');
 
 
-    const submitHandler = (e) => {
+    const submitHandler = async (e) => {
         e.preventDefault();
   
         const newRequest = {
@@ -22,9 +22,24 @@ function MakeRequest( {addRuquestSubmit} ) {
           autorName
         };
   
-        addRuquestSubmit(newJob);
-        toast.success("Размещение создано!")
-        return navigate('/jobs');
+        const res = await fetch(`/api/add-request`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: title,
+            type: type,
+            location: location,
+            description: description,
+            autorName: autorName
+          }),
+        });
+        const data = await res.json()
+        return data;
+
+        // toast.success("Размещение создано!")
+        // return navigate('/jobs');
       }
 
 
@@ -44,13 +59,13 @@ function MakeRequest( {addRuquestSubmit} ) {
               <select
                 id="type"
                 name="type"
-                className="border rounded w-full py-2 px-3 bg-gray-100 text-gray-700"
+                className="border rounded w-full py-2 px-3  text-gray-700"
                 required
                 value={ type }
                 onChange={ ( e ) => setType ( e.target.value ) }
               >
                 <option value="Ремонт">Ремонт</option>
-                <option value="Обслужинвание">Обслужинвание</option>
+                <option value="Обслуживание">Обслуживание</option>
 
               </select>
             </div>
@@ -61,7 +76,7 @@ function MakeRequest( {addRuquestSubmit} ) {
                 type="text"
                 id="title"
                 name="title"
-                className="border rounded w-full  py-2 px-3 mb-2 bg-gray-100 text-gray-700"
+                className="border rounded w-full  py-2 px-3 mb-2  text-gray-700"
                 placeholder="Очень важная работа и т.п."
                 required
                 value={ title }
@@ -77,7 +92,7 @@ function MakeRequest( {addRuquestSubmit} ) {
               <textarea
                 id="description"
                 name="description"
-                className="border rounded w-full py-2 px-3 bg-gray-100 text-gray-700"
+                className="border rounded w-full py-2 px-3 text-gray-700"
                 rows="4"
                 placeholder="Добавьте ожидания, требования и т. д."
                 value={ description }
@@ -93,7 +108,7 @@ function MakeRequest( {addRuquestSubmit} ) {
                 type='text'
                 id='location'
                 name='location'
-                className='border rounded w-full py-2 px-3 mb-2 bg-gray-100 text-gray-700'
+                className='border rounded w-full py-2 px-3 mb-2  text-gray-700'
                 placeholder='Корпус, кабинет'
                 required           
                 value={ location }
@@ -110,7 +125,7 @@ function MakeRequest( {addRuquestSubmit} ) {
                 type="text"
                 id="company"
                 name="company"
-                className="border rounded w-full py-2 px-3 bg-gray-100 text-gray-700"
+                className="border rounded w-full py-2 px-3  text-gray-700"
                 placeholder="Имя, отдел"
                 value={ autorName }
                 onChange={ ( e ) => setAutorName ( e.target.value ) }

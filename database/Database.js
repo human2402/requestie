@@ -7,6 +7,19 @@ class Database {
     this.run = promisify(this.db.run.bind(this.db));
     this.get = promisify(this.db.get.bind(this.db));
     this.all = promisify(this.db.all.bind(this.db));
+
+
+    this.run = (sql, params = []) => {
+      return new Promise((resolve, reject) => {
+        this.db.run(sql, params, function (err) {
+          if (err) {
+            reject(err);
+          } else {
+            resolve({ lastID: this.lastID, changes: this.changes });  // Return `lastID` and `changes`
+          }
+        });
+      });
+    };
   }
 
   async initialize() {
@@ -23,23 +36,24 @@ class Database {
       )
     `);
 
-    // Create the users table
     await this.run(`
-      CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY,
-        username TEXT UNIQUE,
-        password TEXT,
-        name TEXT,
-        role TEXT
-      )
-    `);
+        CREATE TABLE IF NOT EXISTS users (
+          id INTEGER PRIMARY KEY,
+          username TEXT,
+          name TEXT,
+          password TEXT,
+          role TEXT
+        ) 
+    `)
 
-    // Insert one user into the users table
-    // await this.run(`
-    //   INSERT OR IGNORE INTO users (username, password, name, role) 
-    //   VALUES ('admin', 'admin123', 'Admin User', 'admin')
-    // `);
-    
+    await this.run(`
+        CREATE TABLE IF NOT EXISTS sessions (
+          id INTEGER PRIMARY KEY,
+          username TEXT,
+          created TEXT,
+          lifespan TEXT
+        ) 
+    `)
   //   await this.run(`
   //   INSERT INTO requests (status, time, title, type, description, location, contact) VALUES
   //   ('Pending', '2023-09-01 12:00', 'Issue with lights1111', 'Maintenance', 'The lights in the hallway are flickering.', 'Building A, 2nd Floor', 'John Doe, 555-1234'),
