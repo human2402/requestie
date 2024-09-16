@@ -10,6 +10,8 @@ function MakeRequest( {addRuquestSubmit} ) {
     const [description, setDescription] = useState('');
     const [autorName, setAutorName] = useState('');
 
+    const [assignedID, assignID] = useState(0)
+
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -36,6 +38,11 @@ function MakeRequest( {addRuquestSubmit} ) {
           }),
         });
         const data = await res.json()
+        console.log (res.status)
+
+        if (res.status == 200){
+          assignID (data.assignedID)
+        }
         return data;
 
         // toast.success("Размещение создано!")
@@ -137,10 +144,18 @@ function MakeRequest( {addRuquestSubmit} ) {
               <button
                 className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                 type="submit"
+                style = {{backgroundColor: '#ff6600'}}
               >
                 Разместить
               </button>
             </div>
+
+            {(assignedID != 0)&& (
+              <div className="mt-4">
+                <h1 className = 'text-green-700 text-xl font-semibold'>Номер запроса: {assignedID}</h1>
+             </div>
+            )}
+            
           </form>
         </div>
       </div>

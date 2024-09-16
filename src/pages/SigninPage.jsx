@@ -38,7 +38,7 @@ function SigninPage({ setUser }) {
               })
               
               // toast.success("Успешно!")
-              return navigate('/');
+              return navigate('/kanban');
             }
             } catch (error) {
                 console.log ('Error fetching data', error)
@@ -110,7 +110,7 @@ function SigninPage({ setUser }) {
                       Пароль
                     </label>
                     <div className="text-sm">
-                      <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                      <a href="https://t.me/human2402"  className="font-semibold text-indigo-600 hover:text-indigo-500" style = {{сolor: '#164676'}}>
                         Забыли пароль?
                       </a>
                     </div>
@@ -131,7 +131,7 @@ function SigninPage({ setUser }) {
     
                 <div>
                   <button
-
+                    style = {{backgroundColor: '#ff6600'}}
                     className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                   >
                     Войти
@@ -141,7 +141,7 @@ function SigninPage({ setUser }) {
     
               <p className="mt-10 text-center text-sm text-gray-500">
                 Ещё не зарегестрирован?{' '}
-                <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                <a href="https://t.me/human2402" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
                   Тебе сюда
                 </a>
               </p>

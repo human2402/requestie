@@ -7,7 +7,7 @@ function MainLayout({ user }) {
   
   return (
     <>
-        <Navbar user = {user}/>
+        <Navbar user = {user} />
         <Outlet />
         <ToastContainer />
     </>
