@@ -2,13 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import TaskSingle from '../components/TaskSingle';
 import { FaInfoCircle, FaDotCircle } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 const Kanban = ({user}) => {
   const [tasks, setTasks] = useState({ pending: [], inprogress: [], completed: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const nav = useNavigate()
+
   useEffect(() => {
+    if (user.role == '') {
+      nav('/sign-in')
+    }
+
     const fetchTasks = async () => {
       try {
         const response = await fetch('/api/requests/');

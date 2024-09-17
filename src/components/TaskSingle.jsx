@@ -3,6 +3,7 @@ import { FaExpand, FaDotCircle, FaEdit  } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 // const TaskSingle = ({ task }) => (
 //   //   <div className="text-left">
@@ -24,7 +25,6 @@ import { Link } from 'react-router-dom';
 const TaskSingle =  ({user ,task, moveTask}) => {
   const [isDeleted, setDeleted] = useState (false) 
 
-  console.log (task)
   let navigate = useNavigate();
   let deleteATask = async (e) => {
     const confirm = window.confirm ("Вы уверенны, что хотите удалить это размещение?")
@@ -42,7 +42,9 @@ const TaskSingle =  ({user ,task, moveTask}) => {
         sessionID: user.sessionID
       }),
     });
-    const data = await res.json()
+    if (res.ok) {
+      toast.warning('Удалено')
+    }
     setDeleted(true)
     navigate('/kanban')
     return ;

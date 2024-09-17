@@ -1,7 +1,7 @@
 import React, { useState, useEffect  } from 'react'
 import { FaAngleRight } from "react-icons/fa";
 
-function MakeComment({user, id, addComment}) {
+function MakeComment({user, id, addComment, name}) {
     const [username, setUsername] = useState('')
     const [commentText, setCommentText] = useState('')
 
@@ -9,8 +9,10 @@ function MakeComment({user, id, addComment}) {
     useEffect(() => {
         if (user.firstName !== '') {
           setUsername(user.firstName + " " + user.secondName);
+        } else {
+            setUsername(name)
         }
-      }, [user.firstName, user.secondName]);
+      }, [user.firstName, user.secondName, name]);
 
 
     const submitHandler = async (e) => {

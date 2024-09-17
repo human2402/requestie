@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import { FaDotCircle } from "react-icons/fa";
 import CommentSingle from '../components/CommentSingle';
 import MakeComment from '../components/MakeComment';
+import { toast } from 'react-toastify';
 
 function SingleRequest({ user }) {
     const navigate = useNavigate()
@@ -18,6 +19,8 @@ function SingleRequest({ user }) {
 
     const [comments, setComments] = useState ([])
 
+    const hasShownToast = useRef(false);
+    
     const addComment = (newComment) => {
         const isSupport = (user.role != '') ? (1) : (0)
         let oldComments = comments
@@ -54,7 +57,11 @@ function SingleRequest({ user }) {
           try {
             const response = await fetch('/api/request/'+id);
             if (!response.ok) {
-              throw new Error('Failed to fetch tasks');
+                if (!hasShownToast.current) {
+                    hasShownToast.current = true; // Set flag to true to prevent future toasts
+                    toast.error('Запрос #' + id + " не найден");
+                    navigate("/request-search");
+                }
               setTime(0)
             }
             const data = await response.json();
@@ -69,6 +76,7 @@ function SingleRequest({ user }) {
             setLatestComment(data.latestcomment)
             if (data.latestcomment != null) {fetchComments()}
           } catch (err) {
+
             
             setError(err.message);
           } finally {
@@ -83,10 +91,8 @@ function SingleRequest({ user }) {
     <section className="">
     <div className="container m-auto max-w-2xl py-24 pb-1">
       <div className="bg-white px-6 py-8 mb-1 shadow-md rounded-md border m-1 md:m-0">
-        {
-            (time==0)?
-            (<h2 className="text-3xl text-red-800 text-center font-semibold "> Запрос #{id} не найден</h2>):
-            (<>
+        
+            <>
             <p className="text-sm text-gray-600">{time}</p>
                 <form >
                   <h2 className="text-3xl text-gray-600 text-center font-semibold mb-6"> Запрос #{id}</h2>
@@ -168,8 +174,8 @@ function SingleRequest({ user }) {
                           )
                       }
                 </form>
-                </>)
-        }
+                </>
+        
         
       </div>
     </div>
@@ -184,7 +190,7 @@ function SingleRequest({ user }) {
                     <div className='bg-gray-400 w-100 h-1 mb-4 mt-2 rounded-md' ></div>
                 )
             }
-        <MakeComment  user = {user} id = {id} addComment = {addComment}/>
+        <MakeComment  user = {user} id = {id} addComment = {addComment} name = {contact}/>
         </div>
 
     </div>

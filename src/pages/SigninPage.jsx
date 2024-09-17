@@ -1,14 +1,21 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useActionData, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
+import Cookies from 'js-cookie';
  
-function SigninPage({ setUser }) {
+function SigninPage({ setUser, user }) {
     const [inputUserName, setinputUserName] = useState("")
     const [inputPassword, setInputPassword] = useState("")
     const [loginStat, setLoginStat] = useState(0)
 
     const navigate = useNavigate();
+
+    useEffect (() => {
+      if (user.sessionID != '') {
+        navigate('/kanban')
+      }
+    }, [navigate])
 
     const loginClickHandle = (e) => {
         
@@ -36,8 +43,13 @@ function SigninPage({ setUser }) {
                 sessionID: data.sessionID,
                 role: data.role
               })
-              
-              // toast.success("Успешно!")
+               // Save user data to cookies
+              Cookies.set('firstName', data.name, { expires: 30 }); // Expires in 7 days
+              Cookies.set('secondName', data.secondName, { expires: 30 });
+              Cookies.set('sessionID', data.sessionID, { expires: 30 });
+              Cookies.set('role', data.role, { expires: 30 });
+                  
+              toast.success("Добро пожаловать, "+data.name)
               return navigate('/kanban');
             }
             } catch (error) {

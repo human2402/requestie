@@ -2,6 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 function EditRequest({ user}) {
@@ -73,6 +74,10 @@ function EditRequest({ user}) {
         sessionID: user.sessionID
       }),
     });
+
+    if (res.ok) {
+      toast.success("Изменено")
+    }
     return navigate('/kanban');
   };
 

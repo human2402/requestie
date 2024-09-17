@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 function MakeRequest(  ) {
@@ -36,6 +37,7 @@ function MakeRequest(  ) {
 
         if (res.status == 200){
           assignID (data.assignedID)
+          toast.success("Создан запрос #"+data.assignedID)
           nav('/request-single/'+data.assignedID)
         }
         return data;
