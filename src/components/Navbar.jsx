@@ -8,7 +8,7 @@ const Navbar = ({user}) => {
       : 'text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2';
 
   return (
-    <nav className="border-b border-indigo-500" style = {{backgroundColor: '#164676'}}>
+    <nav className="border-b" style = {{backgroundColor: '#164676'}}>
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           <div
@@ -30,9 +30,14 @@ const Navbar = ({user}) => {
                   to="/"
                   className={LinkclassName}
                 >
-                  Запрос
+                  Создать Запрос
                 </NavLink>
-                
+                <NavLink
+                  to="/request-search"
+                  className={LinkclassName}
+                >
+                  Найти Запрос
+                </NavLink>
                 { (user.sessionID == '')?
                 (<NavLink
                   to="/sign-in"
@@ -46,7 +51,7 @@ const Navbar = ({user}) => {
                     to="/kanban"
                     className={LinkclassName }
                   >
-                    Дела
+                    Доска Дел
                   </NavLink>
                   <NavLink
                   to="/profile"

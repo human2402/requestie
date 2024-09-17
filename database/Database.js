@@ -32,7 +32,11 @@ class Database {
         type TEXT,
         description TEXT,
         location TEXT,
-        contact TEXT
+        contact TEXT,
+        latestcomment TEXT,
+        updateseenby TEXT,
+        archived INTEGER DEFAULT 0,
+        deleted INTEGER DEFAULT 0
       )
     `);
 
@@ -54,6 +58,16 @@ class Database {
           lifespan TEXT
         ) 
     `)
+
+    await this.run(`
+      CREATE TABLE IF NOT EXISTS comments (
+        id INTEGER PRIMARY KEY,
+        torequestid INTEGER NOT NUll, 
+        fromsupport INTEGER DEFAULT 0,
+        username TEXT,
+        created TEXT
+      ) 
+  `)
   //   await this.run(`
   //   INSERT INTO requests (status, time, title, type, description, location, contact) VALUES
   //   ('Pending', '2023-09-01 12:00', 'Issue with lights1111', 'Maintenance', 'The lights in the hallway are flickering.', 'Building A, 2nd Floor', 'John Doe, 555-1234'),

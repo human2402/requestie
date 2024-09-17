@@ -72,7 +72,7 @@ class RequestRepository {
   async createRequest (reqArray) {
     let fullAr = [
       ...Object.values(reqArray),
-      'Pending',
+      'pending',
       formatDateToDDMMYYHHMM(),
     ]
     console.log (fullAr)
@@ -138,6 +138,71 @@ class RequestRepository {
         id
       ]
     );
+  }
+
+  async updateRequestStatus (id, newStatus) {
+    await this.db.run (
+      `
+        UPDATE requests
+        SET status = ?
+        WHERE id = ?
+      `, [newStatus, id ]
+    )
+  }
+
+  async getCommentsByID (id) {
+
+    const res = await this.db.all (
+      `
+        SELECT * 
+        FROM comments
+        WHERE torequestid = ?
+      `, [id]
+    )
+    return res
+  }
+
+  async addCommentByUsualUser (id, username, commentText){
+    await this.db.run (
+      `
+        UPDATE requests
+        SET latestcomment = ?, latestcommentby = ?
+        WHERE id = ?
+      `, [commentText, username, id ]
+    )
+    let result = await this.db.run (`
+      INSERT INTO comments (torequestid, username, created, maintext) 
+      VALUES (?, ?, ?, ?)
+    `, [
+      id, 
+      username, 
+      formatDateToDDMMYYHHMM(),
+      commentText
+    ]);
+
+    return result.lastID;
+  }
+
+  async addCommentBySupport (id, username, commentText){
+    await this.db.run (
+      `
+        UPDATE requests
+        SET latestcomment = ?, latestcommentby = ?
+        WHERE id = ?
+      `, [commentText, username, id ]
+    )
+    let result = await this.db.run (`
+      INSERT INTO comments (torequestid, username, created, maintext, fromsupport) 
+      VALUES (?, ?, ?, ?, ?)
+    `, [
+      id, 
+      username, 
+      formatDateToDDMMYYHHMM(),
+      commentText,
+      1
+    ]);
+
+    return result.lastID;
   }
     
 }

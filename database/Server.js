@@ -17,14 +17,17 @@ db.initialize();
 app.use(express.json());
 
 const verifySessionID = async (sessionID, expectedRole) => {
-  let isOK = false
   if (sessionID != '') {
     let sessionFound = await requestRepository.findSessionByID(sessionID)
-    console.log ("ses found: ", sessionFound)
+    // console.log ("ses found: ", sessionFound)
     // console.log(sessionFound)
     if (sessionFound != undefined) {
-      if (sessionFound.role == expectedRole) {
+      if (expectedRole == "") {
         return true
+      }else {
+        if (sessionFound.role == expectedRole) {
+          return true
+        }
       }
     }
   }
@@ -45,13 +48,13 @@ app.get('/requests', async (req, res) => {
     requests.forEach(element => {
       // console.log (element.id)
       switch(element.status) {
-        case "Pending":
+        case "pending":
           structuredResponse.pending.push(element)
           break;
-        case "In Progress":
+        case "inprogress":
           structuredResponse.inprogress.push(element)
           break;
-        case 'Completed':
+        case 'completed':
           structuredResponse.completed.push(element)
           break;
       }
@@ -62,6 +65,21 @@ app.get('/requests', async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.get ('/comments/:id', async (req, res) => {
+  try {
+    let reqID = req.params.id
+    let comments = await requestRepository.getCommentsByID(reqID)
+    if (!comments && comments.length !=0) {
+      res.status(404).json({mes: 'no comments found'})
+    } else{
+      res.json(comments)
+    }
+    
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
 
 
 
@@ -143,7 +161,7 @@ app.put('/request-edit/:id', async (req, res) => {
     if (verif){
       await requestRepository.updateRequest(reqId, updatedReq.updatedRequest);
 
-      res.json({ message: 'Job updated successfully' });
+      res.json({ message: 'Request updated successfully' });
     } else {
       res.status(400).json({mes: "ну вы самозванец"})
     }
@@ -155,6 +173,50 @@ app.put('/request-edit/:id', async (req, res) => {
   }
 });
 
+app.put('/comment-add/:id', async (req, res) => {
+  try {
+    const reqId = req.params.id;
+    const newComment = req.body.newComment;
+    const sessionID = req.body.sessionID;
+
+    if (sessionID == '') {
+      console.log (newComment)
+      const resultID = await requestRepository.addCommentByUsualUser(reqId, newComment.username, newComment.maintext)
+      res.json({ message: 'Comment added successfully ID: '+resultID });
+    } else {
+      let verif = await verifySessionID(req.body.sessionID, '')
+      if (verif){
+        const resultID = await requestRepository.addCommentBySupport(reqId, newComment.username, newComment.maintext)
+        res.json({ message: 'Comment added successfully ID: '+resultID });
+      } else {
+        res.status(400).json({mes: "ну вы самозванец"})
+      }
+    } 
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/request-edit-status/:id', async (req, res) => {
+  try {
+    const reqId = req.params.id;
+    const newStatus = req.body.newStatus;
+
+    let verif = await verifySessionID(req.body.sessionID, '')
+
+    console.log ('is it ok',verif)
+    
+    if (verif){
+      await requestRepository.updateRequestStatus (reqId, newStatus)
+      res.json({ message: 'Request updated successfully' });
+    } else {
+      res.status(400).json({mes: "ну вы самозванец"})
+    }
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+})
 
 // Start the server
 app.listen(port, () => {

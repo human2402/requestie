@@ -35,7 +35,6 @@ function EditRequest({ user}) {
           throw new Error('Failed to fetch tasks');
         }
         const data = await response.json();
-        setTask(data);
         setStatus(data.status)
         setTitle(data.title)
         setType(data.type)
@@ -91,7 +90,7 @@ function EditRequest({ user}) {
           className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0"
         >
           <form onSubmit={ submitHandler }>
-            <h2 className="text-3xl text-gray-600 text-center font-semibold mb-6">Редактировать Запрос ID: {id}</h2>
+            <h2 className="text-3xl text-gray-600 text-center font-semibold mb-6">Редактировать Запрос #{id}</h2>
             <div className="mb-4">
               <label for="type" className="block text-gray-700  font-bold mb-2">Вид</label>
               <select
@@ -175,8 +174,9 @@ function EditRequest({ user}) {
               <button
                 className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                 type="submit"
+                style = {{backgroundColor: '#ff6600'}}
               >
-                Разместить
+                Применить
               </button>
             </div>
           </form>

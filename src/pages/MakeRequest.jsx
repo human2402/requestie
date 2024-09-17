@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
 
-function MakeRequest( {addRuquestSubmit} ) {
+function MakeRequest(  ) {
     const [title, setTitle] = useState('');
     const [type, setType] = useState('Ремонт');
     const [location, setLocation] = useState('');
@@ -12,17 +12,11 @@ function MakeRequest( {addRuquestSubmit} ) {
 
     const [assignedID, assignID] = useState(0)
 
+    const nav = useNavigate()
+
 
     const submitHandler = async (e) => {
         e.preventDefault();
-  
-        const newRequest = {
-          title,
-          type,
-          location,
-          description, 
-          autorName
-        };
   
         const res = await fetch(`/api/add-request`, {
           method: 'POST',
@@ -42,6 +36,7 @@ function MakeRequest( {addRuquestSubmit} ) {
 
         if (res.status == 200){
           assignID (data.assignedID)
+          nav('/request-single/'+data.assignedID)
         }
         return data;
 

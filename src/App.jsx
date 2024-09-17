@@ -12,6 +12,8 @@ import MakeRequest from './pages/MakeRequest'
 import SigninPage from './pages/SigninPage'
 import EditRequest from './pages/EditRequest'
 import Profile from './pages/Profile'
+import RequestSearch from './pages/RequestSearch'
+import SingleRequest from './pages/SingleRequest'
 
 function App() {
   const [user, setUser] = useState ({
@@ -39,6 +41,10 @@ function App() {
 
 
         {/* <Route index element = {<Kanban />} /> */}
+
+        <Route path = '/request-search' element = {<RequestSearch />} />
+        <Route path = '/request-single/:id' element  = {<SingleRequest user = {user}/>} />
+
         <Route path = '/kanban' element = {<Kanban user = {user} />} />
         <Route  index element = {<MakeRequest />} />
         <Route path = '/sign-in' element = {
