@@ -19,6 +19,7 @@ import EditRequest from './pages/EditRequest'
 import Profile from './pages/Profile'
 import RequestSearch from './pages/RequestSearch'
 import SingleRequest from './pages/SingleRequest'
+import ArchivePage from './pages/ArchivePage';
 
 function App() {
 
@@ -70,6 +71,7 @@ function App() {
 
         <Route path = '/request-search' element = {<RequestSearch />} />
         <Route path = '/request-single/:id' element  = {<SingleRequest user = {user}/>} />
+        <Route path = '/request-archive' element = {<ArchivePage user = {user} />} />
 
         <Route path = '/kanban' element = {<Kanban user = {user} />} />
         <Route  index element = {<MakeRequest />} />

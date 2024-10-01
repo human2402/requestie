@@ -60,6 +60,9 @@ function SingleRequest({ user }) {
                 if (!hasShownToast.current) {
                     hasShownToast.current = true; // Set flag to true to prevent future toasts
                     toast.error('Запрос #' + id + " не найден");
+                    // toast.success('Но мы стараемся')
+                    // toast.error('Сил не осталось')
+                    // toast.success('Но мы стараемся')
                     navigate("/request-search");
                 }
               setTime(0)

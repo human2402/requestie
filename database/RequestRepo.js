@@ -32,7 +32,9 @@ class RequestRepository {
     }
     
     async getAllRequests(limit) {
-      let query = 'SELECT * FROM requests';
+      let query = `SELECT * 
+                  FROM requests  
+                  WHERE archived = 0 AND deleted = 0`;
       const params = [];
 
       
@@ -92,15 +94,18 @@ class RequestRepository {
     return res.lastID;
   }
 
-  async deleteRequest (delID) {
+  async deleteRequest (delID, newState) {
     await this.db.run(`
-      DELETE FROM requests WHERE id = ?  
-    `, [delID],
+      UPDATE requests
+      SET deleted = ?
+      WHERE id = ? 
+    `, [newState, delID ],
     (err) => {
       if (err) {
         res.status(500).json({ error: err.message });
         return;
       }
+      console.log ('deleted ', [newState, delID ])
       res.json({ message: 'Job deleted successfully' });
     })
   }

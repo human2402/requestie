@@ -25,7 +25,6 @@ import { toast } from 'react-toastify';
 const TaskSingle =  ({user ,task, moveTask}) => {
   const [isDeleted, setDeleted] = useState (false) 
 
-  let navigate = useNavigate();
   let deleteATask = async (e) => {
     const confirm = window.confirm ("Вы уверенны, что хотите удалить это размещение?")
     
@@ -46,7 +45,28 @@ const TaskSingle =  ({user ,task, moveTask}) => {
       toast.warning('Удалено')
     }
     setDeleted(true)
-    navigate('/kanban')
+    return ;
+
+    
+  }
+
+  let restoreATask = async (e) => {
+    e.preventDefault()
+    const res = await fetch(`/api/restore-request`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ID: task.id,
+        sessionID: user.sessionID
+      }),
+    });
+    if (res.ok) {
+      toast.success('Восстановлено')
+      setDeleted(false)
+    }
+    
     return ;
 
     
@@ -56,7 +76,9 @@ const TaskSingle =  ({user ,task, moveTask}) => {
   let dotColors = getStatusClass(task.status)
   return (<>
     {(isDeleted)? 
-    (<></>):
+    (<>
+      <p className="text-sm2 text-gray-800 hover:text-blue-800 focus:outline-none cursor-pointer" onClick={restoreATask}>Восстановить...</p>
+    </>):
     (
       <>
     <div className="flex justify-between items-start mb-2 hover:text-red-800">
@@ -75,29 +97,34 @@ const TaskSingle =  ({user ,task, moveTask}) => {
         
       </div>
     </div>
-    <div className="flex justify-between items-center mb-3 space-x-2">
-      <h2 className="text-xl font-semibold text-gray-900 flex">
-         {task.title}
-      </h2>
-      {/* Button with info icon */}
-      <div className='flex items-center'>
-        {(user.role == 'admin')?
-        (<><button
+    <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center mb-3 space-y-2 sm:space-y-0 sm:space-x-2">
+  <h2 className="text-xl font-semibold text-gray-900">
+    {task.title}
+  </h2>
+  
+  {/* Button with info icon */}
+  <div className="flex items-center space-x-2 sm:ml-auto">
+    {(user.role === 'admin') && (
+      <>
+        <button
           onClick={deleteATask}
           className="text-blue-500 hover:text-blue-700 focus:outline-none"
-          aria-label="More Info"
+          aria-label="Delete Task"
         >
-          <FaDeleteLeft size={20}  className="text-gray-400 hover:text-red-800"  />
+          <FaDeleteLeft size={20} className="text-gray-400 hover:text-red-800" />
         </button>
         <Link
-          to={'/request-edit/'+task.id}
-          className="text-blue-500 hover:text-blue-700 focus:outline-none ml-2"
-          aria-label="More Info"
+          to={'/request-edit/' + task.id}
+          className="text-blue-500 hover:text-blue-700 focus:outline-none"
+          aria-label="Edit Task"
         >
-          <FaEdit size={19}  className="text-gray-400 hover:text-blue-800"  />
-        </Link></>): (<></>)}
-      </div>
-    </div>
+          <FaEdit size={19} className="text-gray-400 hover:text-blue-800" />
+        </Link>
+      </>
+    )}
+  </div>
+</div>
+
     <p className="text-sm2 text-gray-900 mb-3">{task.description}</p>
     <div className='flex justify-between '>
       <div>
@@ -123,17 +150,21 @@ const TaskSingle =  ({user ,task, moveTask}) => {
       {
         (task.latestcomment!=null)&&
         (
-          <>
+          <Link
+          to={'/request-single/'+task.id}
+          aria-label="More Info"
+        >
+        
             <div className='flex justify-between items-start hover:text-red-800 mt-4 items-center space-x-2 text-gray-700  font-bold '>
               <div className='bg-blue-200 w-11 h-10 rounded-full flex items-center justify-center'>      
                 <label for="type" className="block text-l ">{task.latestcommentby[0]}</label>
               </div>
               <p className="border rounded w-full py-2 px-3 text-sm text-gray-700">
-              {task.latestcomment}
+                {task.latestcomment}
               </p>
             
             </div>
-        </>
+            </Link>
         )
       }
     </>)  

@@ -129,7 +129,23 @@ app.delete ('/delete-request', async (req, res) => {
   if (verifySessionID(req.body.sessionID, 'admin')){
     try {
       const remID = req.body.ID;
-      await requestRepository.deleteRequest(remID);
+      await requestRepository.deleteRequest(remID, 1);
+
+      res.json({ message: remID });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  } else {
+   
+  }
+})
+
+app.delete ('/restore-request', async (req, res) => {
+  // console.log (req.body)
+  if (verifySessionID(req.body.sessionID, 'admin')){
+    try {
+      const remID = req.body.ID;
+      await requestRepository.deleteRequest(remID, 0);
 
       res.json({ message: remID });
     } catch (err) {
