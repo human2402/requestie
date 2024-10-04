@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
-import { FaExpand, FaDotCircle, FaEdit  } from "react-icons/fa";
+import React, { useEffect, useState } from 'react'
+import { FaExpand, FaDotCircle, FaEdit, FaAngleRight  } from "react-icons/fa";
 import { FaDeleteLeft } from "react-icons/fa6";
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { BsArchive } from "react-icons/bs";
 
 // const TaskSingle = ({ task }) => (
 //   //   <div className="text-left">
@@ -22,8 +23,21 @@ import { toast } from 'react-toastify';
 //   // </div>
 // )
 
-const TaskSingle =  ({user ,task, moveTask}) => {
+const TaskSingle =  ({user, task, moveTask}) => {
   const [isDeleted, setDeleted] = useState (false) 
+  const [isArchived, setArchived] = useState (false)
+  const [dispayDescription, setDispayDescription ] = useState ()
+  const [isDescCollapsed, setDescCollapsed] = useState (false)
+
+  useEffect(() => {
+    let dispayLength = 90
+    if (task.description.length>dispayLength) {
+      setDispayDescription(task.description.substring(0, dispayLength) + " ")
+      setDescCollapsed(true)
+    } else {
+      setDispayDescription(task.description)
+    }
+  }, [dispayDescription,isDescCollapsed])
 
   let deleteATask = async (e) => {
     const confirm = window.confirm ("Вы уверенны, что хотите удалить это размещение?")
@@ -46,8 +60,26 @@ const TaskSingle =  ({user ,task, moveTask}) => {
     }
     setDeleted(true)
     return ;
+  }
 
-    
+  let archiveTask = async (e) => {
+    e.preventDefault()
+    const res = await fetch(`/api/archive-request`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ID: task.id,
+        sessionID: user.sessionID
+      }),
+    });
+    if (res.ok) {
+      toast.warning('Заархивирован #'+task.id)
+    }
+    setDeleted(true)
+    setArchived(true)
+    return ;
   }
 
   let restoreATask = async (e) => {
@@ -77,7 +109,19 @@ const TaskSingle =  ({user ,task, moveTask}) => {
   return (<>
     {(isDeleted)? 
     (<>
-      <p className="text-sm2 text-gray-800 hover:text-blue-800 focus:outline-none cursor-pointer" onClick={restoreATask}>Восстановить...</p>
+      {(isArchived)?(
+        <Link
+          to={"/request-archive"}
+          className=" flex items-center text-blue-800 hover:text-gray-900 focus:outline-none ml-2 flex"
+          aria-label="More Info"
+        >В архив <FaAngleRight size = {20}/></Link>
+      ):(
+        <p 
+          className="text-sm2 text-blue-800 hover:text-blue focus:outline-none cursor-pointer" 
+          onClick={restoreATask}
+        >Восстановить...</p>
+      )}
+      
     </>):
     (
       <>
@@ -85,6 +129,12 @@ const TaskSingle =  ({user ,task, moveTask}) => {
       <p className="text-xs text-gray-500">ID: {task.id}</p>
       <div className="flex items-center space-x-2">
         <p className="text-sm text-gray-600 ">{task.time}</p>
+        <BsArchive 
+          onClick={archiveTask}
+          className="text-gray-600 hover:text-gray-900 focus:outline-none ml-2"
+          size={19}
+          
+        />
         <Link
           to={'/request-single/'+task.id}
           className="text-gray-600 hover:text-gray-900 focus:outline-none ml-2"
@@ -103,7 +153,7 @@ const TaskSingle =  ({user ,task, moveTask}) => {
   </h2>
   
   {/* Button with info icon */}
-  <div className="flex items-center space-x-2 sm:ml-auto">
+  <div className="flex items-center space-x-2 sm:ml-auto ">
     {(user.role === 'admin') && (
       <>
         <button
@@ -125,7 +175,18 @@ const TaskSingle =  ({user ,task, moveTask}) => {
   </div>
 </div>
 
-    <p className="text-sm2 text-gray-900 mb-3">{task.description}</p>
+    <p className="text-sm2 text-gray-900 mb-3">
+      {dispayDescription}
+      {(isDescCollapsed)&&(
+        <span 
+          className=" cursor-pointer text-blue-500 hover:text-blue-700 focus:outline-none"
+        > <Link
+          to={'/request-single/'+task.id}
+          aria-label="More Info"
+          >...Развернуть...</Link>
+        </span>
+      )}
+    </p>
     <div className='flex justify-between '>
       <div>
         <p className="text-sm mb-2 text-gray-800">{task.type}</p>
