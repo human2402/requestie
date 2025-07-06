@@ -25,7 +25,7 @@ const verifySessionID = async (sessionID, expectedRole) => {
       if (expectedRole == "") {
         return true
       }else {
-        if (sessionFound.role == expectedRole) {
+        if (expectedRole.includes( sessionFound.role) ) {
           return true
         }
       }
@@ -61,6 +61,19 @@ app.get('/requests', async (req, res) => {
     });
   // console.log (structuredResponse)
     res.json(structuredResponse);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+app.get('/requests-archived', async (req, res) => {
+  try {
+    const limit = parseInt(req.query._limit) || null;
+    const requests = await requestRepository.getArchivedRequests(limit);
+
+  // console.log (structuredResponse)
+    res.json(requests);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -129,7 +142,55 @@ app.delete ('/delete-request', async (req, res) => {
   if (verifySessionID(req.body.sessionID, 'admin')){
     try {
       const remID = req.body.ID;
-      await requestRepository.deleteRequest(remID);
+      await requestRepository.deleteRequest(remID, 1);
+
+      res.json({ message: remID });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  } else {
+   
+  }
+})
+
+app.delete ('/restore-request', async (req, res) => {
+  // console.log (req.body)
+  if (verifySessionID(req.body.sessionID, 'admin')){
+    try {
+      const remID = req.body.ID;
+      await requestRepository.deleteRequest(remID, 0);
+
+      res.json({ message: remID });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  } else {
+   
+  }
+})
+
+app.post ('/archive-request', async (req, res) => {
+  // console.log (req.body)
+  if (verifySessionID(req.body.sessionID, 'supportadmin')){
+    try {
+      const remID = req.body.ID;
+      await requestRepository.archiveRequest(remID, 1, 'archived');
+
+      res.json({ message: remID });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  } else {
+   
+  }
+})
+
+app.post ('/unarchive-request', async (req, res) => {
+  // console.log (req.body)
+  if (verifySessionID(req.body.sessionID, 'supportadmin')){
+    try {
+      const remID = req.body.ID;
+      await requestRepository.archiveRequest(remID, 0, 'archived');
 
       res.json({ message: remID });
     } catch (err) {

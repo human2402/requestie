@@ -32,10 +32,10 @@ class RequestRepository {
     }
     
     async getAllRequests(limit) {
-      let query = 'SELECT * FROM requests';
+      let query = `SELECT * 
+                  FROM requests  
+                  WHERE archived = 0 AND deleted = 0`;
       const params = [];
-
-      
   
       if (limit) {
         query += ' LIMIT ?';
@@ -44,6 +44,20 @@ class RequestRepository {
   
       return this.db.all(query, params);
   }
+
+  async getArchivedRequests(limit) {
+    let query = `SELECT * 
+                FROM requests  
+                WHERE archived = 1 AND deleted = 0`;
+    const params = [];
+
+    if (limit) {
+      query += ' LIMIT ?';
+      params.push(limit);
+    }
+
+    return this.db.all(query, params);
+}
 
   async getUserByUsernameWithPass (username) {
     let user = this.db.all (`
@@ -92,15 +106,34 @@ class RequestRepository {
     return res.lastID;
   }
 
-  async deleteRequest (delID) {
+  async deleteRequest (delID, newState) {
     await this.db.run(`
-      DELETE FROM requests WHERE id = ?  
-    `, [delID],
+      UPDATE requests
+      SET deleted = ?
+      WHERE id = ? 
+    `,  [newState, delID ],
     (err) => {
       if (err) {
         res.status(500).json({ error: err.message });
         return;
       }
+      console.log ('deleted ', [newState, delID ])
+      res.json({ message: 'Job deleted successfully' });
+    })
+  }
+
+  async archiveRequest (delID, newState) {
+    await this.db.run(`
+      UPDATE requests
+      SET archived = ?
+      WHERE id = ? 
+    `,  [newState, delID ],
+    (err) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      console.log ('deleted ', [newState, delID ])
       res.json({ message: 'Job deleted successfully' });
     })
   }

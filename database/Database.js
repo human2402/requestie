@@ -25,7 +25,7 @@ class Database {
   async initialize() {
     await this.run(`
       CREATE TABLE IF NOT EXISTS requests (
-        id INTEGER PRIMARY KEY,
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         status TEXT,
         time TEXT,
         title TEXT,
@@ -67,7 +67,19 @@ class Database {
         username TEXT,
         created TEXT
       ) 
-  `)
+    `)
+
+    await this.run(`
+      CREATE TABLE IF NOT EXISTS requests_archived (
+        id INTEGER PRIMARY KEY,
+        torequestid INTEGER NOT NUll, 
+        fromsupport INTEGER DEFAULT 0,
+        username TEXT,
+        created TEXT
+      ) 
+    `)
+
+    
   //   await this.run(`
   //   INSERT INTO requests (status, time, title, type, description, location, contact) VALUES
   //   ('Pending', '2023-09-01 12:00', 'Issue with lights1111', 'Maintenance', 'The lights in the hallway are flickering.', 'Building A, 2nd Floor', 'John Doe, 555-1234'),

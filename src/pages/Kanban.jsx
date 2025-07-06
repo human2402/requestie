@@ -1,8 +1,9 @@
 // src/components/TaskList.js
 import React, { useState, useEffect } from 'react';
 import TaskSingle from '../components/TaskSingle';
-import { FaInfoCircle, FaDotCircle } from "react-icons/fa";
+import { FaInfoCircle, FaDotCircle, FaArchive  } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Kanban = ({user}) => {
   const [tasks, setTasks] = useState({ pending: [], inprogress: [], completed: [] });
@@ -95,7 +96,17 @@ const Kanban = ({user}) => {
   
   
   
-  
+  function getGreeting() {
+    const currentHour = new Date().getHours();
+    
+    if (currentHour >= 5 && currentHour < 12) {
+      return 'Доброе утро';  // Good morning
+    } else if (currentHour >= 12 && currentHour < 18) {
+      return 'Добрый день';  // Good afternoon
+    } else {
+      return 'Добрый вечер'; // Good evening
+    }
+  }
 
 
   if (loading) return <p>Loading...</p>;
@@ -103,6 +114,18 @@ const Kanban = ({user}) => {
 
   return (
     <div className="container mx-auto p-1 mt-10">
+      <div className="flex justify-between items-start mb-5 mx-5 "> 
+        <h1 className="text-4xl">{getGreeting() + ", " + user.firstName}</h1>
+        <Link
+          to={'/request-archive'}
+          className="text-gray-600 hover:text-gray-900 focus:outline-none ml-2"
+          aria-label="More Info"
+        >
+          <FaArchive  
+            size={35} 
+          />
+        </Link>
+      </div>
       {/* <h1 className="text-2xl font-bold mb-4">Task List</h1> */}
       <div className="grid grid-cols-1  md:grid-cols-3 gap-1">
         {/* Pending Tasks Column */}
