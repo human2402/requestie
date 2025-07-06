@@ -17,6 +17,10 @@ function EditRequest({ user}) {
     const [location, setLocation] = useState ('')
     const [contact, setContact] = useState ('')
 
+    const API_URL = import.meta.env.DEV
+      ? '/api'
+      : import.meta.env.VITE_API_URL;
+
     const [task, setTask] = useState({
       id: '',
       status: '',
@@ -31,7 +35,7 @@ function EditRequest({ user}) {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await fetch('/api/request/'+id);
+        const response = await fetch(`/${API_URL}/request/`+id);
         if (!response.ok) {
           throw new Error('Failed to fetch tasks');
         }
@@ -64,7 +68,7 @@ function EditRequest({ user}) {
       contact
     };
 
-    const res = await fetch(`/api/request-edit/${id}`, {
+    const res = await fetch(`/${API_URL}/request-edit/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

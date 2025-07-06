@@ -5,6 +5,9 @@ function MakeComment({user, id, addComment, name}) {
     const [username, setUsername] = useState('')
     const [commentText, setCommentText] = useState('')
 
+    const API_URL = import.meta.env.DEV
+      ? '/api'
+      : import.meta.env.VITE_API_URL;
 
     useEffect(() => {
         if (user.firstName !== '') {
@@ -23,7 +26,7 @@ function MakeComment({user, id, addComment, name}) {
           maintext: commentText
         };
     
-        const res = await fetch(`/api/comment-add/${id}`, {
+        const res = await fetch(`/${API_URL}/comment-add/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

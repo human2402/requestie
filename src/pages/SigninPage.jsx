@@ -11,6 +11,10 @@ function SigninPage({ setUser, user }) {
 
     const navigate = useNavigate();
 
+    const API_URL = import.meta.env.DEV
+      ? '/api'
+      : import.meta.env.VITE_API_URL;
+
     useEffect (() => {
       if (user.sessionID != '') {
         navigate('/kanban')
@@ -22,7 +26,7 @@ function SigninPage({ setUser, user }) {
         e.preventDefault();
         const signInAttempt = async () => {
             try {
-            const res = await fetch(`/api/sign-in/`, {
+            const res = await fetch(`/${API_URL}/sign-in/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -11,6 +11,10 @@ function ArchivePage({ archivedTasks, user }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const API_URL = import.meta.env.DEV
+      ? '/api'
+      : import.meta.env.VITE_API_URL;
+
   const nav = useNavigate()
   
   useEffect(() => {
@@ -20,7 +24,7 @@ function ArchivePage({ archivedTasks, user }) {
 
     const fetchTasks = async () => {
       try {
-        const response = await fetch('/api/requests-archived');
+        const response = await fetch(`/${API_URL}/requests-archived`);
         if (!response.ok) {
           throw new Error('Failed to fetch tasks');
         }

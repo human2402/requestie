@@ -15,11 +15,14 @@ function MakeRequest(  ) {
 
     const nav = useNavigate()
 
+    const API_URL = import.meta.env.DEV
+      ? '/api'
+      : import.meta.env.VITE_API_URL;
 
     const submitHandler = async (e) => {
         e.preventDefault();
   
-        const res = await fetch(`/api/add-request`, {
+        const res = await fetch(`/${API_URL}/add-request`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

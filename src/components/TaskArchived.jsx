@@ -12,6 +12,10 @@ const TaskArchived =  ({user, task, moveTask}) => {
     const [isArchived, setArchived] = useState (false)
     const [dispayDescription, setDispayDescription ] = useState ()
     const [isDescCollapsed, setDescCollapsed] = useState (false)
+
+    const API_URL = import.meta.env.DEV
+      ? '/api'
+      : import.meta.env.VITE_API_URL;
   
     useEffect(() => {
       let dispayLength = 90
@@ -29,7 +33,7 @@ const TaskArchived =  ({user, task, moveTask}) => {
       if (!confirm) return;
   
       e.preventDefault()
-      const res = await fetch(`/api/delete-request`, {
+      const res = await fetch(`/${API_URL}/delete-request`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -48,7 +52,7 @@ const TaskArchived =  ({user, task, moveTask}) => {
   
     let archiveTask = async (e) => {
       e.preventDefault()
-      const res = await fetch(`/api/unarchive-request`, {
+      const res = await fetch(`/${API_URL}/unarchive-request`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +72,7 @@ const TaskArchived =  ({user, task, moveTask}) => {
   
     let restoreATask = async (e) => {
       e.preventDefault()
-      const res = await fetch(`/api/restore-request`, {
+      const res = await fetch(`/${API_URL}/restore-request`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

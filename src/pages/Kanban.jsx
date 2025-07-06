@@ -12,6 +12,10 @@ const Kanban = ({user}) => {
 
   const nav = useNavigate()
 
+  const API_URL = import.meta.env.DEV
+      ? '/api'
+      : import.meta.env.VITE_API_URL;
+
   useEffect(() => {
     if (user.role == '') {
       nav('/sign-in')
@@ -19,7 +23,7 @@ const Kanban = ({user}) => {
 
     const fetchTasks = async () => {
       try {
-        const response = await fetch('/api/requests/');
+        const response = await fetch(`/${API_URL}/requests/`);
         if (!response.ok) {
           throw new Error('Failed to fetch tasks');
         }
@@ -63,9 +67,13 @@ const Kanban = ({user}) => {
     
     // console.log("State after update:", tasks);
   
+    const API_URL = import.meta.env.DEV
+      ? '/api'
+      : import.meta.env.VITE_API_URL;
+
     try {
       // Send the updated status to the server
-      const response = await fetch(`/api/request-edit-status/${task.id}`, {
+      const response = await fetch(`/${API_URL}/request-edit-status/${task.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -33,11 +33,15 @@ function SingleRequest({ user }) {
         setLatestComment('!')
     }
 
+    const API_URL = import.meta.env.DEV
+      ? '/api'
+      : import.meta.env.VITE_API_URL;
+
 
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const response = await fetch('/api/comments/'+id);
+                const response = await fetch(`/${API_URL}/comments/`+id);
                 if (!response.ok) {
                   throw new Error('Failed to fetch tasks');
                   setTime(0)
@@ -55,7 +59,7 @@ function SingleRequest({ user }) {
 
         const fetchTasks = async () => {
           try {
-            const response = await fetch('/api/request/'+id);
+            const response = await fetch(`/${API_URL}/request/`+id);
             if (!response.ok) {
                 if (!hasShownToast.current) {
                     hasShownToast.current = true; // Set flag to true to prevent future toasts
