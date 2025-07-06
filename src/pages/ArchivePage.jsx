@@ -24,7 +24,7 @@ function ArchivePage({ archivedTasks, user }) {
 
     const fetchTasks = async () => {
       try {
-        const response = await fetch(`/${API_URL}/requests-archived`);
+        const response = await fetch(`${API_URL}/requests-archived`);
         if (!response.ok) {
           throw new Error('Failed to fetch tasks');
         }

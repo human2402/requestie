@@ -22,8 +22,9 @@ const Kanban = ({user}) => {
     }
 
     const fetchTasks = async () => {
+      console.log ("API_URL", API_URL)
       try {
-        const response = await fetch(`/${API_URL}/requests/`);
+        const response = await fetch(`${API_URL}/requests/`);
         if (!response.ok) {
           throw new Error('Failed to fetch tasks');
         }
@@ -73,7 +74,7 @@ const Kanban = ({user}) => {
 
     try {
       // Send the updated status to the server
-      const response = await fetch(`/${API_URL}/request-edit-status/${task.id}`, {
+      const response = await fetch(`${API_URL}/request-edit-status/${task.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

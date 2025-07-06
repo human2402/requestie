@@ -26,7 +26,7 @@ function SigninPage({ setUser, user }) {
         e.preventDefault();
         const signInAttempt = async () => {
             try {
-            const res = await fetch(`/${API_URL}/sign-in/`, {
+            const res = await fetch(`${API_URL}/sign-in/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

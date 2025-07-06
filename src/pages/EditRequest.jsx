@@ -35,7 +35,7 @@ function EditRequest({ user}) {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await fetch(`/${API_URL}/request/`+id);
+        const response = await fetch(`${API_URL}/request/`+id);
         if (!response.ok) {
           throw new Error('Failed to fetch tasks');
         }
@@ -68,7 +68,7 @@ function EditRequest({ user}) {
       contact
     };
 
-    const res = await fetch(`/${API_URL}/request-edit/${id}`, {
+    const res = await fetch(`${API_URL}/request-edit/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

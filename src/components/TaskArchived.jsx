@@ -33,7 +33,7 @@ const TaskArchived =  ({user, task, moveTask}) => {
       if (!confirm) return;
   
       e.preventDefault()
-      const res = await fetch(`/${API_URL}/delete-request`, {
+      const res = await fetch(`${API_URL}/delete-request`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ const TaskArchived =  ({user, task, moveTask}) => {
   
     let archiveTask = async (e) => {
       e.preventDefault()
-      const res = await fetch(`/${API_URL}/unarchive-request`, {
+      const res = await fetch(`${API_URL}/unarchive-request`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ const TaskArchived =  ({user, task, moveTask}) => {
   
     let restoreATask = async (e) => {
       e.preventDefault()
-      const res = await fetch(`/${API_URL}/restore-request`, {
+      const res = await fetch(`${API_URL}/restore-request`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

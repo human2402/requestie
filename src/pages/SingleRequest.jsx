@@ -41,7 +41,7 @@ function SingleRequest({ user }) {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                const response = await fetch(`/${API_URL}/comments/`+id);
+                const response = await fetch(`${API_URL}/comments/`+id);
                 if (!response.ok) {
                   throw new Error('Failed to fetch tasks');
                   setTime(0)
@@ -59,7 +59,7 @@ function SingleRequest({ user }) {
 
         const fetchTasks = async () => {
           try {
-            const response = await fetch(`/${API_URL}/request/`+id);
+            const response = await fetch(`${API_URL}/request/`+id);
             if (!response.ok) {
                 if (!hasShownToast.current) {
                     hasShownToast.current = true; // Set flag to true to prevent future toasts

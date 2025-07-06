@@ -22,7 +22,7 @@ function MakeRequest(  ) {
     const submitHandler = async (e) => {
         e.preventDefault();
   
-        const res = await fetch(`/${API_URL}/add-request`, {
+        const res = await fetch(`${API_URL}/add-request`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

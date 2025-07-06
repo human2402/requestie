@@ -26,7 +26,7 @@ function MakeComment({user, id, addComment, name}) {
           maintext: commentText
         };
     
-        const res = await fetch(`/${API_URL}/comment-add/${id}`, {
+        const res = await fetch(`${API_URL}/comment-add/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
